@@ -6,8 +6,9 @@ use App\Models\Nft;
 use Illuminate\Http\Request;
 use App\Http\Resources\NftResource;
 use App\Http\Requests\NftRequest;
-//use Illuminate\Support\Facades\Auth;
-//use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+
+
 
 class NftController extends Controller
 {
@@ -18,10 +19,8 @@ class NftController extends Controller
      */
     public function index()
     {
-
-//        $nft = Nft::orderBy('created_at', 'desc')->get();
-        return NftResource::collection(Nft::all());
-//        return NftResource::collection($nft);
+        $nft = Nft::where('user_id' ,  Auth::user()->id)->orderBy('created_at' , 'DESC')->get();
+        return NftResource::collection($nft);
     }
 
     /**
@@ -95,11 +94,11 @@ class NftController extends Controller
 
         $nft = Nft::findorFail($id)
             ->update([
-            'name' => $request->input('name'),
-            'description' => $request->input('description'),
+                'name' => $request->input('name'),
+                'description' => $request->input('description'),
 //            'image' => $request->file('image'),
-            'price' => $request->input('price')
-        ]);
+                'price' => $request->input('price')
+            ]);
 
 //        $request->validated();
 
